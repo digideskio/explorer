@@ -8,6 +8,8 @@ var ProjectUtils = require('./ProjectUtils');
 var FilterUtils = require('./FilterUtils');
 var TimeframeUtils = require('./TimeframeUtils');
 
+// var Dataviz = require('keen-dataviz');
+
 var QUERY_PARAMS = [
   'event_collection',
   'analysis_type',
@@ -111,7 +113,7 @@ module.exports = {
     }
 
     if (params.steps) {
-      params.steps = _.map(params.steps, FunnelUtils.stepJSON); 
+      params.steps = _.map(params.steps, FunnelUtils.stepJSON);
     }
 
     _.each(params, function(value, key) {
@@ -214,21 +216,59 @@ module.exports = {
     var chartTypes = [];
 
     if (response) {
-      var dataviz = new Keen.Dataviz();
-      dataviz.data(response);
-      var dataType = dataviz.dataType();
+      var chartTypes = [
+        'area',
+        'area-spline',
+        'area-step',
+        'bar',
+        'horizontal-bar',
+        'donut',
+        'pie',
+        'gauge',
+        'line',
+        'metric',
+        'spline',
+        'step'
+      ];
+      // var dataviz = new Dataviz()
+      //   .data(response);
 
-      if (dataType && Keen.Dataviz.dataTypeMap[dataType]) {
-        var library = Keen.Dataviz.dataTypeMap[dataType].library;
-        var libraryDefaults = Keen.Dataviz.libraries[library]._defaults;
-        chartTypes = _.clone(libraryDefaults[dataType]);
+      // var chartTypeMap = {
+      //   'Area': 'area',
+      //   'Area Spline': 'area-spline',
+      //   'Area Step': 'area-step',
+      //   'Bar': 'bar',
+      //   'Horizontal Bar': 'horizontal-bar',
+      //   'Donut': 'donut',
+      //   'Pie': 'pie',
+      //   'Gauge': 'gauge',
+      //   'Line': 'line',
+      //   'Metric': 'metric',
+      //   'Spline': 'spline',
+      //   'Step': 'step'
+      // };
 
-        if (!_.contains(chartTypes, 'json')) {
-          chartTypes.push('JSON');
-        }
-      } else if (response && _.contains(['extraction', 'select_unique'], analysisType)) {
-        chartTypes = ['JSON', 'table'];
-      }
+      // _.each(Dataviz.libraries.default, function(methods, name){
+      //   // if (name.indexOf())
+      //   console.log(arguments);
+      //   chartTypes.push(name);
+      // })
+      // chartTypes = _.clone(Dataviz.libraries.default);
+      // if (response && _.contains(['extraction', 'select_unique'], analysisType)) {
+      //   chartTypes = ['JSON', 'table'];
+      // }
+
+      // if (dataType && Keen.Dataviz.dataTypeMap[dataType]) {
+      //   var library = Keen.Dataviz.dataTypeMap[dataType].library;
+      //   var libraryDefaults = Keen.Dataviz.libraries[library]._defaults;
+      //   chartTypes = _.clone(libraryDefaults[dataType]);
+      //
+      //   if (!_.contains(chartTypes, 'json')) {
+      //     chartTypes.push('JSON');
+      //   }
+      // } else if (response && _.contains(['extraction', 'select_unique'], analysisType)) {
+      //   chartTypes = ['JSON', 'table'];
+      // }
     }
 
     return chartTypes;
@@ -384,5 +424,5 @@ module.exports = {
   slugify: function(name) {
     return name.toLowerCase().replace(/[^\w\s-]/g, '').replace(/ /g, '-');
   }
-  
+
 };

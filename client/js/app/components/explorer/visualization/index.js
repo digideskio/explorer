@@ -17,6 +17,8 @@ var NoticeActions = require('../../../actions/NoticeActions');
 var ExplorerUtils = require('../../../utils/ExplorerUtils');
 var FormatUtils = require('../../../utils/FormatUtils');
 
+var Dataviz = require('keen-dataviz');
+
 var Visualization = React.createClass({
 
   noticeClosed: function() {
@@ -52,7 +54,7 @@ var Visualization = React.createClass({
   },
 
   componentWillMount: function() {
-    this.dataviz = new Keen.Dataviz();
+    this.dataviz = new Dataviz();
   },
 
   componentWillUnmount: function() {
@@ -121,7 +123,7 @@ var Visualization = React.createClass({
           <CodeSample ref="codesample"
                       codeSample={codeSample}
                       hidden={this.props.appState.codeSampleHidden}
-                      onCloseClick={this.props.toggleCodeSample} 
+                      onCloseClick={this.props.toggleCodeSample}
                       isValid={this.props.model.isValid} />
         </div>
       </div>
