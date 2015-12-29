@@ -161,7 +161,7 @@ var ExplorerActions = {
     });
   },
 
-  exec: function(client, id) { 
+  exec: function(client, id) {
     var explorer = ExplorerStore.get(id);
     if (explorer.loading) {
       throw new Error("Warning: calling exec when model loading is true. Explorer id: " + explorer.id);
@@ -176,7 +176,7 @@ var ExplorerActions = {
       return;
     }
     NoticeActions.clearAll();
-    
+
     AppDispatcher.dispatch({
       actionType: ExplorerConstants.EXPLORER_UPDATE,
       id: explorer.id,
@@ -208,7 +208,7 @@ var ExplorerActions = {
       isSaved: ExplorerUtils.isPersisted(explorer)
     });
     NoticeActions.clearAll();
-    
+
     var updates = _.cloneDeep(explorer);
     updates.response = response;
     // If there is no query object on the response, add one. This is required for Dataviz to properly auto-parse
@@ -246,7 +246,7 @@ var ExplorerActions = {
       query: ExplorerUtils.queryJSON(explorer),
       success: module.exports.runEmailExtractionSuccess.bind(this, explorer),
       error: module.exports.runEmailExtractionError,
-    });  
+    });
   },
 
   runEmailExtractionSuccess: function(explorer, res) {

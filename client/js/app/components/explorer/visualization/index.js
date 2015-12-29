@@ -37,7 +37,7 @@ var Visualization = React.createClass({
   formatChartTypes: function() {
     return _.map(ExplorerUtils.getChartTypeOptions(this.props.model.response, this.props.model.query.analysis_type), function(type) {
       return {
-        name: (type !== 'JSON') ? FormatUtils.toTitleCase(type).replace('chart', '') : type,
+        name: (type !== 'JSON') ? FormatUtils.toTitleCase(type) : type,
         value: type
       };
     });

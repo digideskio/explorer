@@ -18,9 +18,15 @@ var KeenViz = React.createClass({
   	this.props.dataviz.data(this.props.model.response)
 			.el(this.refs['keen-viz'].getDOMNode())
 			.height(400)
-  		// .title('') // No title - not necessary for Explorer
-	    .type(this.props.model.metadata.visualization.chart_type)
-    	.render();
+	    .type(this.props.model.metadata.visualization.chart_type);
+		if (this.props.model.metadata.visualization.chart_type !== 'metric') {
+			this.props.dataviz
+				.title(null)
+				.chartOptions({
+					transition: { duration: 0 }
+				});
+		}
+		this.props.dataviz.render();
 	},
 
 	// ***********************

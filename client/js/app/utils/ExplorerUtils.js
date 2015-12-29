@@ -8,8 +8,6 @@ var ProjectUtils = require('./ProjectUtils');
 var FilterUtils = require('./FilterUtils');
 var TimeframeUtils = require('./TimeframeUtils');
 
-// var Dataviz = require('keen-dataviz');
-
 var QUERY_PARAMS = [
   'event_collection',
   'analysis_type',
@@ -214,7 +212,6 @@ module.exports = {
 
   getChartTypeOptions: function(response, analysisType) {
     var chartTypes = [];
-
     if (response) {
       var chartTypes = [
         'area',
@@ -230,8 +227,6 @@ module.exports = {
         'spline',
         'step'
       ];
-      // var dataviz = new Dataviz()
-      //   .data(response);
 
       // var chartTypeMap = {
       //   'Area': 'area',
