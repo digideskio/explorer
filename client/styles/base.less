@@ -3,9 +3,8 @@
  */
 
 // Vendor
-@import 'vendor/pickadate/classic';
-@import 'vendor/pickadate/classic-date';
-@import 'vendor/pickadate/classic-time';
+@import '../../node_modules/react-date-picker/base.css';
+@import '../../node_modules/react-date-picker/theme/hackerone.css';
 
 // Scope all styles under '#keen-explorer' to reduce conflicts.
 #keen-explorer {
@@ -31,6 +30,7 @@
   @import 'fields-toggle';
   @import 'react-select';
   @import 'interactive-list';
+  @import 'datepicker';
 
   // Components
   @import 'dashboard';
@@ -87,10 +87,6 @@
       margin: 0;
       top: 2px;
     }
-  }
-
-  .tooltip {
-    z-index: 1040;
   }
 
   .modal-content {

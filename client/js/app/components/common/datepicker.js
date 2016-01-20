@@ -5,47 +5,51 @@
 var _ = require('lodash');
 var React = require('react');
 var moment = require('moment');
-
-var pickadate = require('../../../vendor/picker.js');
-var pickadate = require('../../../vendor/picker.date.js');
-var pickadate = require('../../../vendor/picker.time.js');
+var classNames = require('classnames');
+var ReactDatePicker = require('react-date-picker');
+function findAncestor (el, cls) {
+  while ((el = el.parentElement) && !el.classList.contains(cls));
+  return el;
+}
 
 var Datepicker = React.createClass({
 
   handleOnBlur: function(event) {
-    this.destroyPicker();
+    if (event.relatedTarget && findAncestor(event.relatedTarget, 'picker') !== null) {
+      return
+    }
+    var newState = { showPicker: false };
     var value = event.target.value;
     var isValid = moment(new Date(value)).isValid();
 
     if (isValid) {
       this.props.onBlur(event);
-      this.setState({ errorMsg: false });
+      newState.errorMsg = false;
     } else if (value && !isValid) {
-      this.setState({ errorMsg: 'Invalid' });
+      newState.errorMsg = 'Invalid';
     }
+
+    this.setState(newState);
   },
 
   onFocus: function() {
-    var minimum = this.props.minimum;
-    $(this.refs[this.props.refValue]).pickadate({
-      format: 'mmm d, yyyy',
-      editable: true,
-      min: minimum,
-      onSet: _.bind(function(args) {
-        this.props.onSet(this.props.name, new Date(this.refs.datepicker.value));
-      }, this)
-    });
+    this.setState({ showPicker: true });
   },
 
-  destroyPicker: function() {
-    var picker = $(this.refs[this.props.refValue]).pickadate('picker');
-    if (picker) picker.stop();
+  onDateSelected: function(dateString) {
+    this.props.onSet(this.props.name, new Date(dateString));
+    this.setState({ showPicker: false });
+  },
+
+  onInputChange: function() {
+    // Noop
   },
 
   // React methods
 
   getInitialState: function() {
     return {
+      showPicker: false,
       errorMsg: false
     };
   },
@@ -64,19 +68,28 @@ var Datepicker = React.createClass({
   render: function() {
     var label = this.props.label ? <label htmlFor={this.props.name}>{this.props.label}</label> : null;
     var errorMsg = this.state.errorMsg ? <p>{this.state.errorMsg}</p> : '';
+    var pickerWrapperClasses = classNames({
+      'picker': true,
+      'hide':  !this.state.showPicker
+    });
 
     return (
       <div className={this.props.classes}>
         {label}
         <input type="text"
-               ref={this.props.refValue}
-               name={this.props.name}
-               className="form-control"
-               value={this.props.value}
-               onChange={this.props.onChange}
-               onBlur={this.handleOnBlur}
-               onFocus={this.onFocus}
-               placeholder={this.props.placeholder} />
+                     ref={this.props.refValue}
+                     name={this.props.name}
+                     className="form-control datepicker-input"
+                     value={this.props.value}
+                     onChange={this.onInputChange}
+                     onBlur={this.handleOnBlur}
+                     onFocus={this.onFocus}
+                     placeholder={this.props.placeholder} />
+        <div className={pickerWrapperClasses}>
+          <ReactDatePicker minDate={this.props.minimum}
+                           date={moment(new Date(this.props.value))}
+                           onChange={this.onDateSelected} />
+        </div>
         {errorMsg}
       </div>
     );
