@@ -20,10 +20,14 @@ var KeenViz = React.createClass({
       .data(this.props.model.response)
       .el(this.refs['keen-viz'])
       .height(300)
-      .sortGroups('desc')
       .title(null)
-      .type(this.props.model.metadata.visualization.chart_type)
-      .render();
+      .type(this.props.model.metadata.visualization.chart_type);
+
+    if (this.props.model.metadata.visualization.chart_type !== 'table') {
+      this.props.dataviz.sortGroups('desc');
+    }
+
+    this.props.dataviz.render();
 
     this.lastDataTimestamp = this.props.model.dataTimestamp;
     this.lastChartType = this.props.model.metadata.visualization.chart_type;
